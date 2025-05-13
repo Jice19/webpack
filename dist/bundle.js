@@ -1,0 +1,1 @@
+(()=>{var e={55:e=>{e.exports=function(e){window.document.getElementById("root").innerHTML="Hello,"+e}}},r={};(function o(t){var n=r[t];if(void 0!==n)return n.exports;var i=r[t]={exports:{}};return e[t](i,i.exports,o),i.exports})(55)("Jice")})();
