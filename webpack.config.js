@@ -7,6 +7,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const HTMLPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  mode: 'development', 
   // 入口
   entry: './src/index.js',
   // 出口
@@ -50,4 +51,15 @@ module.exports = {
       new CssMinimizerPlugin(),
     ],
   },
+  devServer: {
+    // 使用static选项替代contentBase
+    static: {
+      directory: path.join(__dirname, 'dist')
+    },
+    // 压缩
+    compress: true,
+    port: 8080,
+    hot: true,//自动更新浏览器
+    open: true  
+  }
 };

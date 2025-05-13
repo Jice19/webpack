@@ -2,4 +2,4 @@
 require('./css/init.css')
 
 const show = require('./show.js')
-show('Jice')
+show('Jice19')
