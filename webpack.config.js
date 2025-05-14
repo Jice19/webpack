@@ -5,14 +5,19 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 // 分离html文件
 const HTMLPlugin = require('html-webpack-plugin');
+const { Generator } = require('webpack');
 
 module.exports = {
   mode: 'development', 
   // 入口
-  entry: './src/index.js',
+  // entry: './src/index.js',
+  entry:{
+    index:'./src/index.js',
+    login:'./src/login/login.js'
+  },
   // 出口
   output: {
-    filename: 'bundle.js',
+    filename: '[name].js',
     // 使用Node方法输出
     path: path.resolve(__dirname, './dist'),
     clean: true, // 每次构建前清理dist目录
@@ -28,19 +33,39 @@ module.exports = {
           },
           "css-loader"
         ]
+      },
+      {
+        //匹配图片文件
+        test:/\.(png|jpg|gif|jpeg)/,
+      type:'asset',
+      generator:{
+        filename:'img/[name].[hash:6][ext]'
+      },
+      parser:{
+        dataUrlCondition:{
+          maxSize:10*1024
+        }
       }
+    }
     ]
   },
   plugins: [
     // 单独提取CSS
     new MiniCssExtractPlugin({
-      filename: "main.css"
+      filename: "[name].css"
     }),
     // 配置HTML插件
     new HTMLPlugin({
       template: "./public/index.html", // 指定模板文件路径
       filename: "index.html", // 输出的HTML文件名
-      inject: "body", // 将脚本注入到body底部
+      inject: "body", // 将脚本注入到body底部,
+      chunks:['index']
+    }),
+    new HTMLPlugin({
+      template: "./public/login.html", // 指定模板文件路径
+      filename: "login.html", // 输出的HTML文件名
+      inject: "body", // 将脚本注入到body底部,
+      chunks:['login']
     }),
   ],
   optimization: {
@@ -60,6 +85,7 @@ module.exports = {
     compress: true,
     port: 8080,
     hot: true,//自动更新浏览器
-    open: true  
+    open: true  ,
+    historyApiFallback: true, // 添加这一行
   }
 };
